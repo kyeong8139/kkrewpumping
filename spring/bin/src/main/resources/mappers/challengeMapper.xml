@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kkrew.model.dao.ChallengeDao">
+	<select id="selectAllChallenge" resultType="challenge">
+		SELECT id, title, level, purpose, period, image_url
+		FROM challenge
+		ORDER BY current_participants_count DESC
+	</select>	
+	
+	<select id="selectOneChallenge" resultType="challenge">
+		SELECT * FROM challenge
+		WHERE id = ${id}
+	</select>
+	
+	<insert id="insertChallenge" parameterType="challenge" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO challenge (title, purpose, level, period, time, video_count, writer, image_url)
+		VALUES (#{title}, #{purpose}, ${level}, ${period}, #{time}, #{videoCount}, #{writer}, #{imageUrl})
+	</insert>
+	
+	<update id="updateChallenge" parameterType="challenge">
+		UPDATE challenge
+		SET title= #{title}, level = ${level}, purpose = #{purpose}, period = ${period}, time = ${time},
+			participants_count = #{participantsCount}, 
+			current_participants_count = #{currentParticipantsCount}, 
+			success_participants_count = #{successParticipantsCount}
+		WHERE id = ${id}
+	</update>
+	
+	<update id="updateChallengeWriter">
+		UPDATE challenge
+		SET writer = #{writer}
+		WHERE id = ${id}
+	</update>
+	
+	<delete id="deleteChallenge">
+		DELETE FROM challenge
+		WHERE id = ${id}
+	</delete>
+	
+	<select id="searchChallengeList">
+		SELECT * FROM challenge
+		<choose>
+			<when test="key == 'writer'">
+				WHERE ${key} = #{word}			
+			</when>
+			<otherwise>
+				WHERE title LIKE CONCAT('%', #{word}, '%')
+			</otherwise>
+		</choose>
+		ORDER BY current_participants_count DESC
+	</select>
+	
+	<select id="selectChallengeVideoId">
+		SELECT video_id 
+		FROM challenge_video 
+		WHERE challenge_id = ${id}
+	</select>
+	
+	<insert id="insertChallengeVideo">
+		INSERT INTO challenge_video (challenge_id, video_id, `order`)
+		VALUES (#{challengeId}, #{videoId}, #{order})
+	</insert>
+	
+	<select id="selectSupplies">
+		SELECT DISTINCT supplies
+		FROM challenge_supplies
+		WHERE challenge_id = ${id}
+	</select>
+	
+	<insert id="insertSupplies">
+		INSERT INTO challenge_supplies (challenge_id, supplies) 
+		VALUES (${id}, #{supply})
+	</insert>
+	
+	<delete id="deleteSupplies">
+		DELETE FROM challenge_supplies
+		WHERE challenge_id = ${id} and supplies = #{supply}
+	</delete>
+	
+	<select id="countChallengeByVideoId">
+        SELECT COUNT(*) FROM challenge_video
+        WHERE video_id = #{id}
+    </select>
+	
+</mapper>

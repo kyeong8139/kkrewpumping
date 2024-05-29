@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kkrew.model.dao.MessageDao">
+	<select id="selectMessageById" resultType="message">
+		SELECT * FROM message
+		WHERE to_user = #{id}
+		ORDER BY from_datetime DESC 
+		limit 5;
+	</select>
+	
+	<insert id="insertMessage">
+		INSERT INTO message (from_user, content, to_user)
+		VALUES (#{fromUser}, #{content}, #{toUser})
+	</insert>
+</mapper>

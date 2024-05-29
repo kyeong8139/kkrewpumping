@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kkrew.model.dao.KrewDao">
+	<select id="selectKrewByChallengeId" resultType="krew">
+		SELECT * FROM crew
+		WHERE challenge_id = #{challengeId}
+	</select>
+	
+	<select id="selectKrewById" resultType="krew">
+		SELECT * FROM crew
+		WHERE id = #{krewId}
+	</select>
+	
+	<insert id="insertKrew" parameterType="krew" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO crew (name, end_date, challenge_id) 
+		VALUES (#{name}, #{endDate}, #{challengeId})
+	</insert>
+	
+	<insert id="insertKrewUser" parameterType="krewUser">
+		INSERT INTO crew_user (crew_id, user_id, user_challenge_id)
+		VALUES (#{krewId}, #{userId}, #{userChallengeId})
+	</insert>
+	
+	<select id="selectKrewUserById" resultType="krewUser">
+		SELECT user_id, user_challenge_id FROM crew_user
+		WHERE crew_id = #{krewId}
+	</select>
+	
+	<select id="selectUserChallengeInfo" resultType="krewUser">
+		SELECT current_completion, update_timeStamp FROM user_challenge
+		where id = #{userChallengeId}
+	</select>
+</mapper>

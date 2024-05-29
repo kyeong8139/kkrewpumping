@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kkrew.model.dao.UserChallengeDao">
+	
+	<select id="selectUserChallengeList" resultType="userChallenge">
+		SELECT * FROM user_challenge
+		WHERE user_id = #{id} and completion = #{completion}
+		ORDER BY end_date DESC	
+	</select>
+	
+	<select id="selectOneUserChallenge" resultType="userChallenge">
+		SELECT * FROM user_challenge
+		WHERE id = #{userChallengeId}
+	</select>
+	
+	
+	<insert id="insertUserChallenge" parameterType="userChallenge" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO user_challenge (user_id, challenge_id, crew_id, start_date, end_date, video_count)
+		VALUES (#{userId}, #{challengeId}, #{crewId}, #{startDate}, #{endDate}, #{videoCount})
+	</insert>
+	
+	<update id="updateCurrentCompletion" parameterType="userChallenge">
+		UPDATE user_challenge
+		SET current_completion = #{currentCompletion}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="updateComplete" parameterType="userChallenge">
+		UPDATE user_challenge
+		SET completion = 1
+		WHERE id = #{id}
+	</update>
+</mapper>
+

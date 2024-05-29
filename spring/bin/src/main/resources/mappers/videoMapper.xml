@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kkrew.model.dao.VideoDao">
+	<select id="searchVideo" resultType="video">
+		SELECT * FROM video
+		<if test="key != 'none'">
+			<choose>
+				<when test="key == 'title'">
+					WHERE title LIKE CONCAT('%', #{word}, '%')
+				</when>
+				<otherwise>
+					WHERE ${key} = #{word}			
+				</otherwise>
+			</choose>
+		</if>
+		ORDER BY view_count
+	</select>
+	
+	<insert id="insertVideo" parameterType="video" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO video (title, purpose, image_url, video_url, writer, description)
+		VALUES (#{title}, #{purpose}, #{imageUrl}, #{videoUrl}, #{writer}, #{description}) 
+	</insert>
+	
+	<update id="updateVideo" parameterType="video">
+		UPDATE video
+		SET title = #{title}, purpose = #{purpose}
+		WHERE id = ${id}
+	</update>
+	
+	<update id="updateVideoWriter" parameterType="video">
+		UPDATE video
+		SET writer = #{writer}
+		WHERE id = ${id}
+	</update>
+	
+	<delete id="deleteVideo">
+		DELETE FROM video
+		WHERE id = ${videoId}
+	</delete>
+	
+	<select id="selectSupplies">
+		SELECT DISTINCT supplies
+		FROM video_supplies
+		WHERE video_id = ${videoId}
+	</select>
+	
+	<insert id="insertSupplies">
+		INSERT INTO video_supplies (video_id, supplies) 
+		VALUES (${videoId}, #{supply})
+	</insert>
+	
+	<delete id="deleteSupplies">
+		DELETE FROM video_supplies
+		WHERE video_id = ${videoId} and supplies = #{supply}
+	</delete>
+	
+	<update id="updataViewCount">
+		UPDATE video
+		SET view_count = view_count + 1
+		WHERE id = ${id}
+	</update>
+</mapper>
