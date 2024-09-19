@@ -87,5 +87,5 @@
 
 ### 간편한 가입절차
 ---
-![image](https://github.com/kyeong8139/kkrewpumping/assets/149753416/898add20-66f6-4cb3-a5e3-d2022f1f0103)
+![image](https://github.com/kyeong8139/kkrewpumping_private/assets/149753416/898add20-66f6-4cb3-a5e3-d2022f1f0103)
 **카카오를 통해서 간편하게 가입**할 수 있습니다. 비밀 번호를 잊으셨나요? **이메일 인증을 통해 비밀번호를 재설정** 할 수 있습니다.
